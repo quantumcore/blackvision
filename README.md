@@ -1,6 +1,8 @@
 # hafaza (The Guardian Angel)
-Command line Remote Access tool.
 
+Command line Remote Access tool targeting Windows Systems.
+
+###### Maximum number of clients is 1. 
 ## How to use 
 
 #### Run server 
