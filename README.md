@@ -8,7 +8,7 @@ Command line Remote Access tool.
 git clone https://github.com/lynxmk/hafaza.git
 cd hafaza
 python3 main.py
-``
+```
 
 #### Generate Agent 
 ```
