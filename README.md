@@ -25,7 +25,7 @@ Open settings.ini. And change host, port.
 - [x] sendfile - Send File.
 - [x] bsendfile - Send Binary file.
 - [x] kill - Kill the connection.
-- [x] info - View Detailed System Information (OS, RAM, Location Information, Username/Hostname, Location of Agent)
+- [x] info - View System Information (OS, RAM, Location Information, Username/Hostname, Location of Agent)
 - [x] msgbox - Send Messagebox.
 - [x] exec - Execute a Command on Remote Machine.
 - [x] exec-file - Execute a file on the Remote Machine.
