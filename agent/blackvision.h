@@ -44,7 +44,7 @@ public:
 	void Wanip();
 	void recvFile();
 	void ExecuteFile(char* filename);
-	void RShell();
+	void startup();
 };
 
 

