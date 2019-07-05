@@ -1,6 +1,6 @@
 //#include "pch.h"
 #include "blackvision.h"
-//#pragma warning (disable : 4996)
+//#pragma warning (disable : 4996) enable this if in vs
 
 void Blackvision::startup()
 {
