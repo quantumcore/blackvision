@@ -7,21 +7,21 @@ Command line Remote Access tool targeting Windows Systems.
 
 #### Run server 
 ```
-git clone https://github.com/lynxmk/hafaza.git
-cd hafaza
+git clone https://github.com/lynxmk/blackvision.git
+cd blackvision
 python3 main.py
 ```
 
 #### Generate Agent 
 ```
-cd hafaza
+cd blackvision
 python3 generate.py
 ```
 
 #### Change Host/Port
 Open settings.ini. And change host, port.
 ##### Commands 
-- [ ] Persistent.
+- [x] Persistent.
 - [x] sendfile - Send File.
 - [x] bsendfile - Send Binary file.
 - [x] kill - Kill the connection.
@@ -32,5 +32,4 @@ Open settings.ini. And change host, port.
 - [x] wanip - View Wan ip of remote machine.
 - [x] hostname - View Remote PC Hostname.
 - [x] username - View Remote PC username.
-- [ ] keylog - Start keylogging.
 - [ ] keydump - Dump keylog buffer.
