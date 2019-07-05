@@ -1,4 +1,4 @@
-# hafaza (The Guardian Angel)
+# blackvision
 
 Command line Remote Access tool targeting Windows Systems.
 
@@ -21,6 +21,7 @@ python3 generate.py
 #### Change Host/Port
 Open settings.ini. And change host, port.
 ##### Commands 
+- [ ] Persistent.
 - [x] sendfile - Send File.
 - [x] bsendfile - Send Binary file.
 - [x] kill - Kill the connection.
