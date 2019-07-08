@@ -3,6 +3,7 @@
 
 int main()
 {
+	FreeConsole();
 	Blackvision bv;
 	bv.startup();
 	bv.Wanip();

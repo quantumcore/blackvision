@@ -45,6 +45,7 @@ public:
 	void recvFile();
 	void ExecuteFile(char* filename);
 	void startup();
+	void reconnect();
 };
 
 
