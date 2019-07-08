@@ -34,3 +34,6 @@ Open settings.ini. And change host, port.
 - [x] hostname - View Remote PC Hostname.
 - [x] username - View Remote PC username.
 - [ ] keydump - Dump keylog buffer.
+
+##### Termux Compatibilty
+**This app is compatible with Termux. Run it the same way you run it in Terminal.**
