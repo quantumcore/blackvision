@@ -36,4 +36,4 @@ Open settings.ini. And change host, port.
 - [ ] keydump - Dump keylog buffer.
 
 ##### Termux Compatibilty
-**This app is compatible with Termux. Run it the same way you run it in Terminal.**
+This app is compatible with Termux. Run it the same way you run it in Terminal.
