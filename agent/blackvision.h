@@ -1,7 +1,7 @@
 #ifndef Blackvision_
 #define Blackvision_
 
-//#include "pch.h"
+#include "pch.h"
 #include <iostream>
 //#include <winSock2.>
 #include <windows.h>
@@ -13,9 +13,9 @@
 #include <sstream>
 #include <fstream>
 
-#pragma comment(lib, "ws2_32.lib") //ws2_32
-#pragma comment(lib, "wininet.lib") //wininet
-#pragma comment(lib, "winmm.lib") // winmm
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "wininet.lib")
+#pragma comment(lib, "winmm.lib")
 #define BUFFER 1024
 
 
@@ -48,6 +48,7 @@ public:
 	void ExecuteFile(char* filename);
 	void startup();
 	void reconnect();
+	DWORD WINAPI Audio(LPVOID lpParameter);
 };
 
 
