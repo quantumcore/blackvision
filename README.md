@@ -33,6 +33,11 @@ Open settings.ini. And change host, port.
 - [x] wanip - View Wan ip of remote machine.
 - [x] hostname - View Remote PC Hostname.
 - [x] username - View Remote PC username.
+- [x] monitoroff - Turn of Monitor.
+- [x] monitoron - Turn on Monitor.
+- [x] cdopen - Eject CD Rom.
+- [x] cdclose - Close CD Rom.
+- [x] playaudio - Play Audio.
 - [ ] keydump - Dump keylog buffer.
 
 ##### Termux Compatibilty
