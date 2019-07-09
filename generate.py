@@ -20,6 +20,7 @@ class GUI:
             host = self.host.get()
             port = self.port.get()
             iconpath = self.path.get()
+            
             rc_generate(filename, iconpath)
             generate(host, port, filename)
 
@@ -51,24 +52,24 @@ class GUI:
         self.path.configure(font=("monospace", 8))
         self.path.pack()
 
-        self.create = Label(master, text="A Wise choice.", fg="cornflowerblue", bg="gray9")
+        self.create = Label(master, text="\nA Wise choice.\n", fg="cornflowerblue", bg="gray9")
         self.create.configure(font=("monospace", 8))
         
-        self.entfilname = Label(master, text="Enter Filename", fg="green", bg="gray9")
+        self.entfilname = Label(master, text="\nEnter Filename\n", fg="green", bg="gray9")
         self.entfilname.configure(font=("monospace", 8))
 
         self.BinaryName = Entry(master)
         self.BinaryName.configure(font=("fixedsys", 8))
         self.BinaryName.configure(font=("fixedsys", 8))
         
-        self.srvhost = Label(master, text="Enter HOST", fg="green", bg="gray9")
+        self.srvhost = Label(master, text="\nEnter HOST\n", fg="green", bg="gray9")
         self.srvhost.configure(font=("monospace", 8))
 
         self.host = Entry(master)
         self.host.configure(font=("fixedsys", 8))
         self.host.configure(font=("fixedsys", 8))
 
-        self.srvport = Label(master, text="Enter PORT", fg="green", bg="gray9")
+        self.srvport = Label(master, text="\nEnter PORT\n", fg="green", bg="gray9")
         self.srvport.configure(font=("monospace", 8))
 
         self.port = Entry(master)
@@ -104,7 +105,7 @@ def main():
     root = Tk()
     root.title("BlackVision")
     root.configure(background="gray9")
-    root.geometry("600x400")
+    root.geometry("600x550")
     root.pack_propagate(0)
     app = GUI(root)
     root.mainloop()
