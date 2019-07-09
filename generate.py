@@ -15,19 +15,22 @@ class GUI:
     def __init__(self, master):
 
         def create_file(file):
+            showInfo("Please wait a few seconds..")
             filename = self.BinaryName.get()
             host = self.host.get()
             port = self.port.get()
-            
+            iconpath = self.path.get()
+            rc_generate(filename, iconpath)
             generate(host, port, filename)
 
-            self.output = Entry(master, bg="gray9", fg="green", bd="1", width=30)
+            self.output = Entry(master, bg="gray9", fg="cyan", bd="1", width=30)
             self.output.configure(font=("monospace", 10))
             self.output.pack()
 
             try:
                 test = open(filename+".exe")
-                self.output.insert(0,"Compilation Succeded!")
+                sstr = "File Compiled! ("+filename+".exe )"
+                self.output.insert(0,sstr)
             except FileNotFoundError:
                 self.output.insert(0,"Compilation Failed!")
 
