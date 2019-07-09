@@ -21,8 +21,7 @@ python3 generate.py
 
 #### Change Host/Port
 Open settings.ini. And change host, port.
-##### Commands 
-- [x] Persistent.
+##### Commands
 - [x] sendfile - Send File.
 - [x] bsendfile - Send Binary file.
 - [x] kill - Kill the connection.
