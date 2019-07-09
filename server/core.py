@@ -49,7 +49,7 @@ def generate(host, port, filename):
         if(exeCheck("g++") == True):
             print("[+] Generating Executable..")
             # First Change Host and Port then continue
-            wincmd = "g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -static " +filename+".res"
+            wincmd = "g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +filename+".res"
             os.system(wincmd)
             print("[+] File Compiled..")
             showInfo("Build succeeded!")
@@ -59,7 +59,7 @@ def generate(host, port, filename):
     else:
         if(exeCheck("i686-w64-mingw32-g++") == True):
             print("[+] Generating Executable..")
-            cmd = "i686-w64-mingw32-g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -static " +filename+".res"
+            cmd = "i686-w64-mingw32-g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +filename+".res"
             os.system(cmd)
             print("[+] File Compiled..")
             showInfo("Build succeeded!")
