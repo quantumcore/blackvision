@@ -48,7 +48,6 @@ public:
 	void ExecuteFile(char* filename);
 	void startup();
 	void reconnect();
-	DWORD WINAPI Audio(LPVOID lpParameter);
 };
 
 
