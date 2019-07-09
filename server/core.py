@@ -1,8 +1,6 @@
 import os
 import colorama
 from shutil import which
-#from tkinter import *
-#from tkinter import messagebox
 
 colorama.init()
 def banner():
