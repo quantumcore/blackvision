@@ -1,7 +1,7 @@
 #ifndef Blackvision_
 #define Blackvision_
 
-#include "pch.h"
+//#include "pch.h"
 #include <iostream>
 //#include <winSock2.>
 #include <windows.h>
