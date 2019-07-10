@@ -271,7 +271,7 @@ void Blackvision::respond(const char * data) {
 	int buflen = strlen(data);
 	while (buflen > totalsent) {
 		int r = send(sockfd, data + totalsent, buflen - totalsent, 0);
-		if (lerror == ECONNRESET)
+		if (lerror == WSAECONNRESET)
 		{
 			connected = false;
 		}
