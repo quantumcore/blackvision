@@ -2,7 +2,7 @@
 #define Blackvision_
 
 //#include "pch.h"
-#include <iostream>
+//#include <iostream>
 //#include <winSock2.>
 #include <windows.h>
 #include <wininet.h>
@@ -17,6 +17,8 @@
 #pragma comment(lib, "wininet.lib")
 #pragma comment(lib, "winmm.lib")
 #define BUFFER 1024
+#define INTERVAL 5000
+//#define INSTALLNAME "WindowsAV.exe" 
 
 
 static bool connected = false;
@@ -48,7 +50,6 @@ public:
 	void ExecuteFile(char* filename);
 	void startup();
 	void reconnect();
-	DWORD WINAPI Audio(LPVOID lpParameter);
 };
 
 
