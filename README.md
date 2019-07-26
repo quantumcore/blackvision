@@ -42,3 +42,8 @@ Open settings.ini. And change host, port.
 
 ##### Termux Compatibilty
 This app is compatible with Termux. Run it the same way you run it in Terminal.
+
+#### TODO
+- Fix sending file to single client.
+- Fix multiple clients information saving.
+- Add keylogging.
