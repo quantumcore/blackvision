@@ -48,3 +48,4 @@ This app is compatible with Termux. Run it the same way you run it in Terminal.
 - Fix multiple clients information saving.
 - Add keylogging.
 - Fix that `args[3]` does not get sent.
+- Broken connection problems.
