@@ -7,6 +7,10 @@ Command line Remote Access tool targeting Windows Systems.
 ###### Extract the file under blackvision/
 ## How to use 
 
+#### Install required modules
+```
+pip3 install -r requirements.txt
+```
 #### Run server 
 ```
 git clone https://github.com/lynxmk/blackvision.git
