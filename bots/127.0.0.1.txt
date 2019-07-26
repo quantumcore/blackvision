@@ -1,0 +1,13 @@
+
+[+] WAN IP : 196.62.147.182
+
+[+] Operating System : Windows 7 
+[+] RAM : 1984 mb
+[+] User-PC : fahad/Fahad
+[+] Agent Location : Z:\home\fahad\Documents\blackvision\hacker.exe
+[+] ISO Code : PK
+[+] Country : Pakistan
+[+] Postal Code : 12311
+[+] Region : Sindh
+[+] City : Karachi
+[+] Location : 24.9043 67.0817

