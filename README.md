@@ -4,8 +4,8 @@ Command line Remote Access tool targeting Windows Systems.
 
 ###### Maximum number of clients is 1.
 ###### Download Maxmind GeoIP2 Database from here ; [LINK](https://dev.maxmind.com/geoip/geoip2/geolite2/)
+###### Extract the file under blackvision/
 ## How to use 
-**Extract Maxmind GeoIP Database (mmdb) to blackvision/**
 
 #### Run server 
 ```
