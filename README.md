@@ -1,4 +1,4 @@
-<p style="align: center"><h1>Black Vision</h1></p>
+<p align="center"><h1>Black Vision</h1></p>
 Buy me a Coffee (BTC) : 35F5tgCydWo8LPvfT3zHVBKSVY2vCcLtAL
 
 Command line Remote Access tool targeting Windows Systems.
