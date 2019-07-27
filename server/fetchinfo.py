@@ -23,7 +23,7 @@ def GetINFO(sock, filename):
             infofile.write("\n[+] City : " + str(city))
             infofile.write("\n[+] Location : " + str(location))
             infofile.close()
-            print("[✔] Done!")
+            print("[+] Done!")
 
     database = geoip2.database.Reader(database_path)
     try:

