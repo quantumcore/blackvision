@@ -4,7 +4,7 @@ Buy me a Coffee (BTC) : 35F5tgCydWo8LPvfT3zHVBKSVY2vCcLtAL
 Command line Remote Access tool targeting Windows Systems.
 
 
-###### Download Maxmind GeoIP2 Database from here ; [LINK](https://dev.maxmind.com/geoip/geoip2/geolite2/)
+###### Download Maxmind GeoIP2 Database (City) from here ; [LINK](https://dev.maxmind.com/geoip/geoip2/geolite2/)
 ###### Extract the file under blackvision/
 ## How to use 
 
