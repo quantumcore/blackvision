@@ -1,11 +1,11 @@
 <h1 align="center">
-  Black Vision
-Command line Remote Access tool targeting Windows Systems.
+  Black Visio
+  <img src="https://github.com/lynxmk/blackvision/blob/master/example.gif">
 </h1>
 Buy me a Coffee (BTC) : 35F5tgCydWo8LPvfT3zHVBKSVY2vCcLtAL
 
+Command line Remote Access tool targeting Windows Systems.
 
-![Example](https://github.com/lynxmk/blackvision/blob/master/example.gif)
 ###### Download Maxmind GeoIP2 Database from here ; [LINK](https://dev.maxmind.com/geoip/geoip2/geolite2/)
 ###### Extract the file under blackvision/
 ## How to use 
