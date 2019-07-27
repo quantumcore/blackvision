@@ -50,10 +50,10 @@ Open settings.ini. And change host, port.
 This app is compatible with Termux. Run it the same way you run it in Terminal.
 
 #### TODO
-[x] Fix sending file to single client. (Fixed)
-[x] Fix multiple clients information saving. (Fixed)
+- [x] Fix sending file to single client. (Fixed)
+- [x] Fix multiple clients information saving. (Fixed)
 - Add keylogging.
-[x] Fix that `args[3]` does not get sent. (Fixed)
+- [x] Fix that `args[3]` does not get sent. (Fixed)
 - Fix Broken connection problems.
 
 [Video Example](https://youtu.be/sxfEDJGn-6A)
