@@ -28,7 +28,7 @@ python3 generate.py
 #### Change Host/Port
 Open settings.ini. And change host, port.
 ##### Commands
-- [x] sendfile - Send File.
+- [x] transfer - Send File.
 - [x] bsendfile - Send Binary file.
 - [x] kill - Kill the connection.
 - [x] info - View System Information (OS, RAM, Location Information, Username/Hostname, Location of Agent)
@@ -43,16 +43,17 @@ Open settings.ini. And change host, port.
 - [x] cdopen - Eject CD Rom.
 - [x] cdclose - Close CD Rom.
 - [x] playaudio - Play Audio.
+- [x] send - send to 1 client.
 - [ ] keydump - Dump keylog buffer.
 
 ##### Termux Compatibilty
 This app is compatible with Termux. Run it the same way you run it in Terminal.
 
 #### TODO
-- Fix sending file to single client.
-- Fix multiple clients information saving.
+[x] Fix sending file to single client. (Fixed)
+[x] Fix multiple clients information saving. (Fixed)
 - Add keylogging.
-- Fix that `args[3]` does not get sent.
+[x] Fix that `args[3]` does not get sent. (Fixed)
 - Fix Broken connection problems.
 
 [Video Example](https://youtu.be/sxfEDJGn-6A)
