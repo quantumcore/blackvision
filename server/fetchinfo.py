@@ -27,9 +27,9 @@ def GetINFO(sock, filename):
 
     database = geoip2.database.Reader(database_path)
     try:
-        private(sock, "wanip\n")
+        SendData("wanip\n")
         wanip = sock.recv(1024).decode()
-        private(sock, "sysinfo\n")
+        SendData("sysinfo\n")
         osinfo = sock.recv(1024).decode()
         ip_info = database.city(wanip)
         ISO_CODE = ip_info.country.iso_code
