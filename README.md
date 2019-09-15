@@ -56,6 +56,7 @@ keydump | DUMP Keystroke buffer (Not added yet)
 This app is compatible with Termux. Run it the same way you run it in Terminal.
 
 #### TODO
+- Rewrite Agent in C.
 - [x] Fix sending file to single client. (Fixed)
 - [x] Fix multiple clients information saving. (Fixed)
 - Add keylogging.
